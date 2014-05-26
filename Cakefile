@@ -1,5 +1,4 @@
 fs            = require 'fs'
-wrench        = require 'wrench'
 {print}       = require 'util'
 which         = require 'which'
 {spawn, exec} = require 'child_process'
@@ -14,7 +13,6 @@ pkg = JSON.parse fs.readFileSync('./package.json')
 testCmd = pkg.scripts.test
 startCmd = pkg.scripts.start
   
-
 log = (message, color, explanation) ->
   console.log color + message + reset + ' ' + (explanation or '')
 
@@ -27,54 +25,8 @@ build = (callback) ->
   coffee.stderr.pipe process.stderr
   coffee.on 'exit', (status) -> callback?() if status is 0
 
-# mocha test
-test = (callback) ->
-  options = [
-    '--globals'
-    'hasCert,res'
-    '--reporter'
-    'spec'
-    '--compilers'
-    'coffee:coffee-script/register'
-    '--colors'
-    '--require'
-    'should'
-    '--require'
-    './server'
-  ]
-  try
-    cmd = which.sync 'mocha' 
-    spec = spawn cmd, options
-    spec.stdout.pipe process.stdout 
-    spec.stderr.pipe process.stderr
-    spec.on 'exit', (status) -> callback?() if status is 0
-  catch err
-    log err.message, red
-    log 'Mocha is not installed - try npm install mocha -g', red
-
-task 'docs', 'Generate annotated source code with Docco', ->
-  files = wrench.readdirSyncRecursive("src")
-  files = ("src/#{file}" for file in files when /\.coffee$/.test file)
-  log files
-  try
-    cmd ='./node_modules/.bin/docco-husky' 
-    docco = spawn cmd, files
-    docco.stdout.pipe process.stdout
-    docco.stderr.pipe process.stderr
-    docco.on 'exit', (status) -> callback?() if status is 0
-  catch err
-    log err.message, red
-    log 'Docco is not installed - try npm install docco -g', red
-
-
 task 'build', ->
-  build -> log ":)", green
-
-task 'spec', 'Run Mocha tests', ->
-  build -> test -> log ":)", green
-
-task 'test', 'Run Mocha tests', ->
-  build -> test -> log ":)", green
+  build -> log "success", green
 
 task 'dev', 'start dev env', ->
   # watch_coffee
@@ -121,16 +73,3 @@ task 'debug', 'start debug env', ->
   chrome.stdout.pipe process.stdout
   chrome.stderr.pipe process.stderr
   log 'Debugging server', green
-  
-option '-n', '--name [NAME]', 'name of model to `scaffold`'
-task 'scaffold', 'scaffold model/controller/test', (options) ->
-  if not options.name?
-    log "Please specify model name", red
-    process.exit(1)
-  log "Scaffolding `#{options.name}`", green
-  scaffold = require './scaffold'
-  scaffold options.name
-  
-
-
-  
