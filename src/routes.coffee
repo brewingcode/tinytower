@@ -4,7 +4,7 @@ index = (req, res) ->
   id = req.session.userId
   if id
     knex.raw """
-      select u.name as user, t.story, f.name, f.id
+      select u.name as username, t.story, f.name, f.id
       from users u
       inner join towers t on t.user = u.id
       inner join floors f on f.id = t.floor
@@ -16,7 +16,7 @@ index = (req, res) ->
       if resp.length
         res.render 'index',
           title: 'Express'
-          user: {name: resp[0]['user']}
+          username: resp[0][0].username
           floors: resp[0]
       else
         res.send(500, 'unable to get a user')
@@ -26,5 +26,13 @@ index = (req, res) ->
       knex('towers').insert(user:resp[0], floor:1, story:1).then ->
         res.redirect("/")
 
+setusername = (req, res) ->
+  knex('users')
+  .where('id', req.session.userId)
+  .update(name: req.param('username'))
+  .then ->
+    res.send(200)
+
 exports.setup = (app) ->
   app.get('/', index)
+  app.post('/setusername', setusername)

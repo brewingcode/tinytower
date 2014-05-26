@@ -9,7 +9,10 @@ mixin floor(f)
 block content
   h1= title
   p Welcome to #{title}
-  p Hello, #{user.name}
+  p Hello,&nbsp;
+    input#username(type="text", value="#{username}")
+    span &nbsp;
+    span#ajaxresult
   table
     each f in floors
       +floor(f)
