@@ -6,6 +6,7 @@ express = require("express")
 routes = require("./routes")
 http = require("http")
 path = require("path")
+store = require("connect-sqlite3")(express)
 app = express()
 
 # all environments
@@ -19,6 +20,11 @@ app.use express.urlencoded()
 app.use express.methodOverride()
 app.use app.router
 app.use express.static(path.join(__dirname, "../public"))
+
+app.use express.cookieParser()
+app.use express.session
+  store: new store,
+  secret: "f8d17b3f29390a9c842b"
 
 # development only
 app.use express.errorHandler()  if "development" is app.get("env")

@@ -9,6 +9,8 @@
     "express": "3.4.8",
     "jade": "*",
     "which": "^1.0.5",
-    "supervisor": "^0.6.0"
+    "supervisor": "^0.6.0",
+    "connect-sqlite3": "^0.9.3",
+    "sqlite3": "^2.2.3"
   }
 }

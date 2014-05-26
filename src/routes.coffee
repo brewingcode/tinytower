@@ -4,3 +4,4 @@ index = (req, res) ->
 
 exports.setup = (app) ->
   app.get('/', index)
+  
