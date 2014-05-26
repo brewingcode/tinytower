@@ -2,7 +2,7 @@
 -- perl -ne 'chomp; @F = split /\t/; $F[3] = 0 if @F == 3; print "  ("; print join ", ",  map {$_ ? "\"$_\"" : 'null'} @F; print "),\n"'
 
 drop table if exists quests;
-create table if not exists quests (id integer primary key, name string, part1 integer, part2 integer, part3 integer);
+create table if not exists quests (name string, part1 integer, part2 integer, part3 integer);
 insert into quests(name, part1, part2, part3) values
   ("Beware Of Dog", "Architect Office", "Game Studio", null),
   ("Soy Loco", "Asian Cuisine", "Vegan Food", null),

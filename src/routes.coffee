@@ -4,10 +4,10 @@ index = (req, res) ->
   id = req.session.userId
   if id
     knex.raw """
-      select u.name as username, t.story, f.name, f.id
+      select u.name as username, t.story, f.name
       from users u
       inner join towers t on t.user = u.id
-      inner join floors f on f.id = t.floor
+      inner join floors f on f.name = t.floor
       where u.id = #{id}
       order by t.story desc
     """
@@ -23,7 +23,7 @@ index = (req, res) ->
   else
     knex('users').insert(name:'').then (resp) ->
       req.session.userId = resp[0]
-      knex('towers').insert(user:resp[0], floor:1, story:1).then ->
+      knex('towers').insert(user:resp[0], floor:"Lobby", story:1).then ->
         res.redirect("/")
 
 setusername = (req, res) ->
