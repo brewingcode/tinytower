@@ -6,3 +6,5 @@ create table if not exists floors (id integer primary key, name string);
 
 drop table if exists towers;
 create table if not exists towers (user integer, floor integer, story integer);
+
+drop table if exists sessions;

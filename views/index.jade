@@ -1,6 +1,14 @@
 extends layout
 
+mixin floor(f)
+  tr
+    td #{f.story}
+    td a(href="floor/#{f.id}") #{f.name}
+
 block content
   h1= title
   p Welcome to #{title}
   p Hello, #{user.name}
+  table
+    each f in floors
+      floor(f)
