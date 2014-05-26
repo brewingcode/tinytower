@@ -73,3 +73,7 @@ task 'debug', 'start debug env', ->
   chrome.stdout.pipe process.stdout
   chrome.stderr.pipe process.stderr
   log 'Debugging server', green
+
+task 'clean', 'reset to empty state', ->
+  exec 'rm -r .app/* && sqlite3 .app/data.db < src/tables.sql', {}, ->
+    log "success", green
