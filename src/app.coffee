@@ -34,6 +34,7 @@ app.use express.urlencoded()
 app.use express.methodOverride()
 app.use app.router
 app.use express.static(path.join(__dirname, "../public"))
+app.locals.pretty = true
 
 # development only
 app.use express.errorHandler()  if "development" is app.get("env")
