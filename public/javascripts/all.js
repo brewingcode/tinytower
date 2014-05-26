@@ -29,7 +29,7 @@ $(document).ready(function() {
     });
   });
 
-  $('#newfloor').autocomplete({
-    serviceUrl: '/newfloors'
+  $('#newfloor').select2({
+    placeholder: "Add a new floor"
   });
 });

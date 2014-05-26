@@ -1,22 +1,23 @@
 {knex} = require 'knex'
+_ = require 'underscore'
 
 index = (req, res) ->
   id = req.session.userId
   if id
     knex.raw("""
       select u.name as username, t.story, f.name
-      from users u
-      inner join towers t on t.user = u.id
-      inner join floors f on f.name = t.floor
-      where u.id = #{id}
+      from floors f
+      left join towers t on f.name = t.floor
+      left join users u on u.id = t.user
       order by t.story desc
-    """).then (resp) ->
+  """).then (resp) ->
       console.log "resp: ", resp
       if resp.length
         res.render 'index',
           title: 'Express'
-          username: resp[0][0].username
-          floors: resp[0]
+          username: (_.find resp[0], (row) -> row.username).username
+          userFloors: _.filter resp[0], (row) -> row.username
+          newFloors: _.map _.filter(resp[0], (row) -> not row.username), (row) -> row.name
       else
         res.send(500, 'unable to get a user')
   else

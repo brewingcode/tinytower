@@ -4,7 +4,7 @@ mixin floor(f)
   tr
     td #{f.story}
     td
-      a(href="floor/#{f.id}") #{f.name}
+      a(href="floor/#{f.name}") #{f.name}
 
 block content
   h1= title
@@ -16,6 +16,9 @@ block content
   table
     tr
       td(colspan="2")
-        input#newfloor(type="text", value="")
-    each f in floors
+        select#newfloor
+          option
+          each newFloor in newFloors
+            option(value="#{newFloor}")= newFloor
+    each f in userFloors
       +floor(f)
