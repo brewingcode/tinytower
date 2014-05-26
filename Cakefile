@@ -43,7 +43,7 @@ task 'dev', 'start dev env', ->
     '.app,views', 
     '-e', 
     'js|jade', 
-    'server'
+    '.app/app'
   ]
   supervisor.stdout.pipe process.stdout
   supervisor.stderr.pipe process.stderr
@@ -60,7 +60,7 @@ task 'debug', 'start debug env', ->
   # run debug mode
   app = spawn 'node', [
     '--debug',
-    'server'
+    '.app/app'
   ]
   app.stdout.pipe process.stdout
   app.stderr.pipe process.stderr
