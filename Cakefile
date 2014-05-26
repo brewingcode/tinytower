@@ -74,6 +74,6 @@ task 'debug', 'start debug env', ->
   chrome.stderr.pipe process.stderr
   log 'Debugging server', green
 
-task 'clean', 'reset to empty state', ->
-  exec 'rm -r .app/* && sqlite3 .app/data.db < src/tables.sql', {}, ->
+task 'wipe', 'reset databaste state for all users', ->
+  exec 'sqlite3 .app/data.db < src/tables.sql', {}, ->
     log "success", green
