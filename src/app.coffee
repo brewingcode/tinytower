@@ -23,7 +23,9 @@ app.use express.static(path.join(__dirname, "../public"))
 
 app.use express.cookieParser()
 app.use express.session
-  store: new store,
+  store: new store
+    dir: ".app"
+    db: "data"
   secret: "f8d17b3f29390a9c842b"
 
 # development only
