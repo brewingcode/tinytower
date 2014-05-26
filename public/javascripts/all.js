@@ -28,4 +28,8 @@ $(document).ready(function() {
       });
     });
   });
+
+  $('#newfloor').autocomplete({
+    serviceUrl: '/newfloors'
+  });
 });

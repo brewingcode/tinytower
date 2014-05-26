@@ -3,15 +3,14 @@
 index = (req, res) ->
   id = req.session.userId
   if id
-    knex.raw """
+    knex.raw("""
       select u.name as username, t.story, f.name
       from users u
       inner join towers t on t.user = u.id
       inner join floors f on f.name = t.floor
       where u.id = #{id}
       order by t.story desc
-    """
-    .then (resp) ->
+    """).then (resp) ->
       console.log "resp: ", resp
       if resp.length
         res.render 'index',
@@ -33,6 +32,13 @@ setusername = (req, res) ->
   .then ->
     res.send(200)
 
+newfloors = (req, res) ->
+  knex('towers').where('id', req.sessionId).then (userFloors) ->
+    knex('floors').whereNotIn('name', userFloors.map (row) -> row.floor).then (newFloors) ->
+      res.json
+        suggestions: newFloors.map (row) -> row.name
+
 exports.setup = (app) ->
   app.get('/', index)
   app.post('/setusername', setusername)
+  app.get('/newfloors', newfloors)

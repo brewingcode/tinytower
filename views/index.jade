@@ -14,5 +14,8 @@ block content
     span &nbsp;
     span#ajaxresult
   table
+    tr
+      td(colspan="2")
+        input#newfloor(type="text", value="")
     each f in floors
       +floor(f)
