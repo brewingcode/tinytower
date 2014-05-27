@@ -73,3 +73,8 @@ task 'debug', 'start debug env', ->
   chrome.stdout.pipe process.stdout
   chrome.stderr.pipe process.stderr
   log 'Debugging server', green
+
+task 'dbinit', 'initialize default sql tables', ->
+  exec 'sqlite3 .app/data.db < src/tables.sql', {}, ->
+    log "Tables loaded", green
+
