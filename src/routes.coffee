@@ -11,7 +11,6 @@ index = (req, res) ->
       left join users u on u.id = t.user
       order by t.story desc
   """).then (resp) ->
-      console.log "resp: ", resp
       if resp.length
         res.render 'index',
           title: 'Express'
