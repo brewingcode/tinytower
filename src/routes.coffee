@@ -106,6 +106,11 @@ togglemission = (req, res) ->
     .then ->
       res.send(200)
 
+clearsession = (req, res) ->
+  req.session.destroy()
+  req.session = null
+  res.send(200)
+
 exports.setup = (app) ->
   app.get('/', index)
   app.post('/setusername', setusername)
@@ -114,3 +119,4 @@ exports.setup = (app) ->
   app.post('/removefloor', removefloor)
   app.get('/missions', missions)
   app.post('/togglemission', togglemission)
+  app.get('/clearsession', clearsession)
