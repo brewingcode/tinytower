@@ -17,7 +17,7 @@ index = (req, res) ->
           title: 'Express'
           username: user.username
           userFloors: _.filter resp[0], (row) -> row.id is id
-          newFloors: _.map _.filter(resp[0], (row) -> row.id isnt id), (row) -> row.name
+          newFloors: _.map _.filter(resp[0], (row) -> not row.id), (row) -> row.name
       else
         res.send(500, 'unable to get a user')
   else
