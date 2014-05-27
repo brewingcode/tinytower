@@ -7,7 +7,7 @@ index = (req, res) ->
     knex.raw """
       select u.id, u.name as username, t.story, f.name
       from floors f
-      left join towers t on f.name = t.floor
+      left join towers t on f.name = t.floor and t.user = #{id}
       left join users u on u.id = t.user
       order by t.story desc"""
     .then (resp) ->
@@ -38,10 +38,10 @@ setusername = (req, res) ->
     res.send(200)
 
 newfloors = (req, res) ->
-  knex('towers').where('id', req.sessionId).then (userFloors) ->
+  knex('towers').where(user: req.session.userId).then (userFloors) ->
     knex('floors')
     .whereNotIn('name', userFloors.map (row) -> row.floor)
-    .andWhere('name', '!=', 'Lobby')
+    .orderBy('name')
     .then (newFloors) ->
       res.json
         suggestions: newFloors.map (row) -> row.name
