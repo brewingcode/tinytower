@@ -13,11 +13,15 @@ index = (req, res) ->
     .then (resp) ->
       user = _.find resp[0], (row) -> row.id is id
       if user
+        [userFloors, newFloors] = _.partition resp[0], (row) -> row.id is user.id
+        if not _.find(newFloors, (row) -> row.name is 'Residential')
+          newFloors.push(name:'Residential')
+
         res.render 'index',
           title: 'Tiny Tower'
           username: user.username
-          userFloors: _.filter resp[0], (row) -> row.id is id
-          newFloors: _.map _.filter(resp[0], (row) -> not row.id), (row) -> row.name
+          userFloors: userFloors
+          newFloors: _.map newFloors, (row) -> row.name
       else
         res.send(500, 'unable to get a user')
   else
