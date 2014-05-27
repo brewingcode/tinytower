@@ -11,3 +11,8 @@ complete, given your tower.
     cake dbload
     cake build
     node .app/app.js
+
+### Example
+
+![image](https://cloud.githubusercontent.com/assets/1566363/3096402/9970994a-e5d3-11e3-93f3-97febc265538.png)
+
