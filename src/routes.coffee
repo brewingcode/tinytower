@@ -23,7 +23,7 @@ index = (req, res) ->
           userFloors: userFloors
           newFloors: _.map newFloors, (row) -> row.name
       else
-        res.send(500, 'unable to get a user')
+        res.send(400, 'unable to get a user')
   else
     knex('users').insert(name:'').then (resp) ->
       req.session.userId = resp[0].id
@@ -53,7 +53,7 @@ addfloor = (req, res) ->
 
 removefloor = (req, res) ->
   if req.param('story') is '1'
-    res.send(500, 'cannot remove the lobby')
+    res.send(400, 'cannot remove the lobby')
   else
     knex('towers').where
       user:req.session.userId
