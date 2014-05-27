@@ -14,8 +14,9 @@ index = (req, res) ->
       user = _.find resp[0], (row) -> row.id is id
       if user
         [userFloors, newFloors] = _.partition resp[0], (row) -> row.id is user.id
-        if not _.find(newFloors, (row) -> row.name is 'Residential')
-          newFloors.push(name:'Residential',category:"(none)")
+
+        newFloors = _.reject newFloors, (row) -> row.name is 'Residential'
+        newFloors.push(name:'Residential',category:"(none)")
 
         hash = {}
         cat = ''
