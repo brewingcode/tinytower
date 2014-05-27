@@ -1,4 +1,4 @@
-CREATE TABLE users (id integer primary key, name string, quest integer);
+CREATE TABLE users (id integer primary key, name string);
 CREATE TABLE towers (user integer, story integer, floor string);
 CREATE UNIQUE INDEX tower_one_story_per_user ON towers(user,story);
 CREATE TABLE completed(mission string, user integer);
