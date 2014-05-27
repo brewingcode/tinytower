@@ -100,6 +100,7 @@ togglemission = (req, res) ->
   else
     knex('completed').where
       user: req.session.userId
+      mission: req.param('name')
     .delete()
     .then ->
       res.send(200)
