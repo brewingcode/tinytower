@@ -5,7 +5,7 @@ index = (req, res) ->
   id = req.session.userId
   if id?
     knex.raw """
-      select u.id, u.name as username, t.story, f.name
+      select u.id, u.name as username, t.story, f.name, f.category
       from floors f
       left join towers t on f.name = t.floor and t.user = #{id}
       left join users u on u.id = t.user
@@ -15,13 +15,22 @@ index = (req, res) ->
       if user
         [userFloors, newFloors] = _.partition resp[0], (row) -> row.id is user.id
         if not _.find(newFloors, (row) -> row.name is 'Residential')
-          newFloors.push(name:'Residential')
+          newFloors.push(name:'Residential',category:"(none)")
 
+        hash = {}
+        cat = ''
+        for floor in _.sortBy(newFloors, (f) -> f.category)
+          if cat isnt floor.category
+            cat = floor.category
+          hash[cat] ?= []
+          hash[cat].push(floor.name)
+
+        console.log "hash: ", hash
         res.render 'index',
           title: 'Tiny Tower'
           username: user.username
           userFloors: userFloors
-          newFloors: _.map newFloors, (row) -> row.name
+          newFloors: hash
       else
         res.send(400, 'unable to get a user')
   else

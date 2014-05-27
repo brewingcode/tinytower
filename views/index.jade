@@ -23,7 +23,9 @@ block content
       td(colspan="3")
         select#newfloor(style="width:100%;")
           option
-          each newFloor in newFloors
-            option(value="#{newFloor}")= newFloor
+          each floors, category in newFloors
+            optgroup(label="#{category}")
+              each f in floors
+                option(value="#{f}")= f
     each f in userFloors
       +floor(f)
