@@ -75,6 +75,6 @@ task 'debug', 'start debug env', ->
   log 'Debugging server', green
 
 task 'dbinit', 'initialize default sql tables', ->
-  exec 'sqlite3 .app/data.db < src/tables.sql', {}, ->
+  exec 'mkdir -p .app && sqlite3 .app/data.db < src/tables.sql', {}, ->
     log "Tables loaded", green
 
