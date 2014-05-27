@@ -71,7 +71,7 @@ missions = (req, res) ->
     select m.name, ifnull(c.user, 0) completed,
       t1.floor part1, t2.floor part2, t3.floor part3, m.part3 hasThird
     from missions m
-    left join completed c on m.name = c.mission
+    left join completed c on m.name = c.mission and (c.user = #{user} or c.user is null)
     left join towers t1 on m.part1 = t1.floor and (t1.user = #{user} or t1.user is null)
     left join towers t2 on m.part2 = t2.floor and (t2.user = #{user} or t2.user is null)
     left join towers t3 on m.part3 = t3.floor and (t3.user = #{user} or t3.user is null)
