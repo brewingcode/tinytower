@@ -48,17 +48,35 @@ addfloor = (req, res) ->
     res.send(200)
 
 missions = (req, res) ->
+  user = req.session.userId
   knex.raw """
-    select m.name, ifnull(c.user, 0) completed
+    select m.name, ifnull(c.user, 0) completed,
+      t1.floor part1, t2.floor part2, t3.floor part3, m.part3 hasThird
     from missions m
     left join completed c on m.name = c.mission
-    where c.user = #{req.session.userId} or c.user is null
+    left join towers t1 on m.part1 = t1.floor and t1.user = #{user}
+    left join towers t2 on m.part2 = t2.floor and t2.user = #{user}
+    left join towers t3 on m.part3 = t3.floor and t3.user = #{user}
+    where c.user = #{user} or c.user is null
     order by m.name"""
   .then (resp) ->
-    console.log "resp: ", resp
+    [finished, unfinished] = _.partition resp[0], (row) -> row.completed isnt 0
+    [possible, impossible] = _.partition unfinished, (row) ->
+      firstTwo = row.part1 and row.part2
+      return firstTwo unless row.hasThird
+      firstTwo and row.part3
+
+    console.log "finished: ", finished
+    console.log "possible: ", possible
+    console.log "impossible: ", impossible
+
+    rowFilter = (row) -> row.name
+
     res.render 'missions',
-      done: _.map _.filter(resp[0], (row) -> row.completed isnt 0), (row) -> row.name
-      possible: _.map _.filter(resp[0], (row) -> row.completed is 0), (row) -> row.name
+      title: 'Missions'
+      done: _.map finished, rowFilter
+      possible: _.map possible, rowFilter
+      impossible: _.map impossible, rowFilter
 
 togglemission = (req, res) ->
   if req.param('which') is 'finish'

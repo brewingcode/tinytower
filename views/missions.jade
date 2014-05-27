@@ -6,8 +6,16 @@ block content
   table(style="width:100%;")
     tr
       td(colspan="2")
-        b Available Missions
+        b Possible Missions
     each m in possible
+      tr
+        td
+          input.finish(type="checkbox", value="#{m}")
+        td= m
+    tr
+      td(colspan="2")
+        b Impossible Missions
+    each m in impossible
       tr
         td
           input.finish(type="checkbox", value="#{m}")
