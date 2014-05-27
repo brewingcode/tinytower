@@ -25,7 +25,6 @@ index = (req, res) ->
           hash[cat] ?= []
           hash[cat].push(floor.name)
 
-        console.log "hash: ", hash
         res.render 'index',
           title: 'Tiny Tower'
           username: user.username
@@ -45,15 +44,6 @@ setusername = (req, res) ->
   .update(name: req.param('username'))
   .then ->
     res.send(200)
-
-newfloors = (req, res) ->
-  knex('towers').where(user: req.session.userId).then (userFloors) ->
-    knex('floors')
-    .whereNotIn('name', userFloors.map (row) -> row.floor)
-    .orderBy('name')
-    .then (newFloors) ->
-      res.json
-        suggestions: newFloors.map (row) -> row.name
 
 addfloor = (req, res) ->
   knex('towers').insert
@@ -122,7 +112,6 @@ clearsession = (req, res) ->
 exports.setup = (app) ->
   app.get('/', index)
   app.post('/setusername', setusername)
-  app.get('/newfloors', newfloors)
   app.post('/addfloor', addfloor)
   app.post('/removefloor', removefloor)
   app.get('/missions', missions)
