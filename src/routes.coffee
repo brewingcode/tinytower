@@ -14,7 +14,7 @@ index = (req, res) ->
       user = _.find resp[0], (row) -> row.id is id
       if user
         res.render 'index',
-          title: 'Express'
+          title: 'Tiny Tower'
           username: user.username
           userFloors: _.filter resp[0], (row) -> row.id is id
           newFloors: _.map _.filter(resp[0], (row) -> not row.id), (row) -> row.name

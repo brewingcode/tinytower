@@ -10,15 +10,13 @@ block content
   style.
     td:first-child { width:5ex; text-align:right; padding-right: 1ex; }
   h1= title
-  p Welcome to #{title}
   p Hello,&nbsp;
     input#username(type="text", value="#{username}")
     span &nbsp;
     span#ajaxresult
   table(style="width:100%;")
     tr
-      td Add:
-      td
+      td(colspan="2")
         select#newfloor(style="width:100%;")
           option
           each newFloor in newFloors
