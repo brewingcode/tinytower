@@ -51,6 +51,17 @@ addfloor = (req, res) ->
   .then ->
     res.send(200)
 
+removefloor = (req, res) ->
+  if req.param('story') is '1'
+    res.send(500, 'cannot remove the lobby')
+  else
+    knex('towers').where
+      user:req.session.userId
+      story: req.param('story')
+    .delete()
+    .then ->
+      res.send(200)
+
 missions = (req, res) ->
   user = req.session.userId
   knex.raw """
@@ -69,10 +80,6 @@ missions = (req, res) ->
       firstTwo = row.part1 and row.part2
       return firstTwo unless row.hasThird
       firstTwo and row.part3
-
-    console.log "finished: ", finished
-    console.log "possible: ", possible
-    console.log "impossible: ", impossible
 
     rowFilter = (row) -> row.name
 
@@ -101,5 +108,6 @@ exports.setup = (app) ->
   app.post('/setusername', setusername)
   app.get('/newfloors', newfloors)
   app.post('/addfloor', addfloor)
+  app.post('/removefloor', removefloor)
   app.get('/missions', missions)
   app.post('/togglemission', togglemission)

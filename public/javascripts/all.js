@@ -53,6 +53,15 @@ $(document).ready(function() {
     });
   });
 
+  $('tr:nth-child(2) > td:last-child').html('<a href="">X</a>').click(function(e) {
+    e.preventDefault();
+    $.post("/removefloor", {
+      story: $('td:nth-child(1)', $(this).parent()).text()
+    }).always(function() {
+      window.location.href = '/';
+    });
+  });
+
   missionCheckboxes('finish');
   missionCheckboxes('undo');
 });

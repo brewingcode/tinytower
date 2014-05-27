@@ -5,10 +5,12 @@ mixin floor(f)
     td #{f.story}
     td
       a(href="floor/#{f.name}") #{f.name}
+    td.removeFloor
 
 block content
   style.
     td:first-child { width:5ex; text-align:right; padding-right: 1ex; }
+    tr:nth-child(2) > td:last-child { text-align: right; }
   h1= title
   p Hello,&nbsp;
     input#username(type="text", value="#{username}")
@@ -18,7 +20,7 @@ block content
     a(href="/missions") Missions
   table(style="width:100%;")
     tr
-      td(colspan="2")
+      td(colspan="3")
         select#newfloor(style="width:100%;")
           option
           each newFloor in newFloors
