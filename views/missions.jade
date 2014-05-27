@@ -6,7 +6,7 @@ block content
   table(style="width:100%;")
     tr
       td(colspan="2")
-        b Possible Missions
+        b Possible Missions (#{possible.length})
     each m in possible
       tr
         td
@@ -14,7 +14,7 @@ block content
         td= m
     tr
       td(colspan="2")
-        b Impossible Missions
+        b Impossible Missions (#{impossible.length})
     each m in impossible
       tr
         td
@@ -22,7 +22,7 @@ block content
         td= m
     tr
       td(colspan="2")
-        b Finished Missions
+        b Finished Missions (#{done.length})
     each m in done
       tr
         td
