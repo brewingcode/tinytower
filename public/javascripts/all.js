@@ -31,5 +31,13 @@ $(document).ready(function() {
 
   $('#newfloor').select2({
     placeholder: "Add a new floor"
+  }).change(function() {
+    $.post("/addfloor", {
+      floor: $('#newfloor').val(),
+      story: $('tr.userFloor').length + 1
+    })
+    .always(function() {
+      window.location.href = '/';
+    });
   });
 });

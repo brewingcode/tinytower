@@ -39,7 +39,16 @@ newfloors = (req, res) ->
       res.json
         suggestions: newFloors.map (row) -> row.name
 
+addfloor = (req, res) ->
+  knex('towers').insert
+    user: req.session.userId
+    floor: req.param('floor')
+    story: req.param('story')
+  .then ->
+    res.send(200)
+
 exports.setup = (app) ->
   app.get('/', index)
   app.post('/setusername', setusername)
   app.get('/newfloors', newfloors)
+  app.post('/addfloor', addfloor)
