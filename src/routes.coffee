@@ -77,7 +77,6 @@ missions = (req, res) ->
     left join towers t3 on m.part3 = t3.floor and (t3.user = #{user} or t3.user is null)
     order by m.name"""
   .then (resp) ->
-    console.log "resp: ", resp
     [finished, unfinished] = _.partition resp[0], (row) -> row.completed isnt 0
     [possible, impossible] = _.partition unfinished, (row) ->
       firstTwo = row.part1 and row.part2
