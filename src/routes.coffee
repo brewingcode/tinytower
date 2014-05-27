@@ -39,7 +39,10 @@ setusername = (req, res) ->
 
 newfloors = (req, res) ->
   knex('towers').where('id', req.sessionId).then (userFloors) ->
-    knex('floors').whereNotIn('name', userFloors.map (row) -> row.floor).then (newFloors) ->
+    knex('floors')
+    .whereNotIn('name', userFloors.map (row) -> row.floor)
+    .andWhere('name', '!=', 'Lobby')
+    .then (newFloors) ->
       res.json
         suggestions: newFloors.map (row) -> row.name
 
@@ -69,12 +72,12 @@ missions = (req, res) ->
       t1.floor part1, t2.floor part2, t3.floor part3, m.part3 hasThird
     from missions m
     left join completed c on m.name = c.mission
-    left join towers t1 on m.part1 = t1.floor and t1.user = #{user}
-    left join towers t2 on m.part2 = t2.floor and t2.user = #{user}
-    left join towers t3 on m.part3 = t3.floor and t3.user = #{user}
-    where c.user = #{user} or c.user is null
+    left join towers t1 on m.part1 = t1.floor and (t1.user = #{user} or t1.user is null)
+    left join towers t2 on m.part2 = t2.floor and (t2.user = #{user} or t2.user is null)
+    left join towers t3 on m.part3 = t3.floor and (t3.user = #{user} or t3.user is null)
     order by m.name"""
   .then (resp) ->
+    console.log "resp: ", resp
     [finished, unfinished] = _.partition resp[0], (row) -> row.completed isnt 0
     [possible, impossible] = _.partition unfinished, (row) ->
       firstTwo = row.part1 and row.part2
