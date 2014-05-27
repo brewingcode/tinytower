@@ -26,7 +26,7 @@ index = (req, res) ->
         res.send(400, 'unable to get a user')
   else
     knex('users').insert(name:'').then (resp) ->
-      req.session.userId = resp[0].id
+      req.session.userId = resp[0]
       knex('towers').insert(user:resp[0], floor:"Lobby", story:1).then ->
         res.redirect("/")
 
