@@ -3,25 +3,26 @@ _ = require 'underscore'
 
 index = (req, res) ->
   id = req.session.userId
-  if id
+  if id?
     knex.raw("""
-      select u.name as username, t.story, f.name
+      select u.id, u.name as username, t.story, f.name
       from floors f
       left join towers t on f.name = t.floor
       left join users u on u.id = t.user
       order by t.story desc
   """).then (resp) ->
-      if resp.length
+      user = _.find resp[0], (row) -> row.id is id
+      if user
         res.render 'index',
           title: 'Express'
-          username: (_.find resp[0], (row) -> row.username).username
-          userFloors: _.filter resp[0], (row) -> row.username
-          newFloors: _.map _.filter(resp[0], (row) -> not row.username), (row) -> row.name
+          username: user.username
+          userFloors: _.filter resp[0], (row) -> row.id is id
+          newFloors: _.map _.filter(resp[0], (row) -> row.id isnt id), (row) -> row.name
       else
         res.send(500, 'unable to get a user')
   else
     knex('users').insert(name:'').then (resp) ->
-      req.session.userId = resp[0]
+      req.session.userId = resp[0].id
       knex('towers').insert(user:resp[0], floor:"Lobby", story:1).then ->
         res.redirect("/")
 
