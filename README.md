@@ -8,5 +8,6 @@ complete, given your tower.
     git clone ...
     cd tinytower && npm install
     cake dbinit
+    cake dbload
     cake build
     node .app/app.js

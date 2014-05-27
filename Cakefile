@@ -74,7 +74,19 @@ task 'debug', 'start debug env', ->
   chrome.stderr.pipe process.stderr
   log 'Debugging server', green
 
-task 'dbinit', 'initialize default sql tables', ->
-  exec 'mkdir -p .app && sqlite3 .app/data.db < src/tables.sql', {}, ->
-    log "Tables loaded", green
+task 'dbinit', 'initialize database with schema', ->
+  exec 'mkdir -p .app', {}, ->
+    schema = fs.openSync 'src/schema.sql', 'r'
+    child = spawn 'sqlite3',
+      ['-echo', '.app/data.db'],
+      {stdio: [schema ,process.stdout, process.stderr]}
+    child.on 'exit', (status) ->
+      console.log if status then "failed" else "success"
 
+task 'dbload', 'load starting rows into database', ->
+  sql = fs.openSync 'src/init.sql', 'r'
+  child = spawn 'sqlite3',
+    ['.app/data.db'],
+    {stdio: [sql ,process.stdout, process.stderr]}
+  child.on 'exit', (status) ->
+    console.log if status then "failed" else "success"

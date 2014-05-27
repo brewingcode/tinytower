@@ -1,9 +1,5 @@
 PRAGMA foreign_keys=OFF;
 BEGIN TRANSACTION;
-CREATE TABLE users (id integer primary key, name string, quest integer);
-CREATE TABLE towers (user integer, story integer, floor string);
-CREATE TABLE completed(mission string, user integer);
-CREATE TABLE floors (name string primary key, category string);
 INSERT INTO "floors" VALUES('Lobby','none');
 INSERT INTO "floors" VALUES('Residential','none');
 INSERT INTO "floors" VALUES('Ad Agency','Creative');
@@ -126,7 +122,6 @@ INSERT INTO "floors" VALUES('Volleyball Club','Recreation');
 INSERT INTO "floors" VALUES('Wedding Chapel','Service');
 INSERT INTO "floors" VALUES('Womens Fashion','Retail');
 INSERT INTO "floors" VALUES('Wood Shop','Creative');
-CREATE TABLE missions (name string, part1 integer, part2 integer, part3 integer);
 INSERT INTO "missions" VALUES('A Baby Is Born','Photo Studio','Toy Store',NULL);
 INSERT INTO "missions" VALUES('A Bit Fishy','Sushi Bar','Mexican Food',NULL);
 INSERT INTO "missions" VALUES('A Day At The Beach','Shoe Store','Volleyball Club','Frozen Yogurt');
