@@ -14,7 +14,6 @@ Knex.knex = Knex.initialize
   client: 'sqlite3'
   connection:
     filename: '.app/data.db'
-  debug: true
 
 # all environments
 app.use express.cookieParser()
