@@ -10,6 +10,18 @@ function runLater(name, t, fn) {
   timers[name] = setTimeout(fn, t);
 }
 
+function missionCheckboxes(clazz) {
+  $('input.'+clazz).change(function() {
+    $.post("/togglemission", {
+      name: $(this).val(),
+      which: clazz
+    })
+    .always(function() {
+      window.location.href = '/missions';
+    });
+  });
+}
+
 $(document).ready(function() {
   $('#username').keyup(function() {
     $('#ajaxresult').finish().html('').show();
@@ -40,4 +52,7 @@ $(document).ready(function() {
       window.location.href = '/';
     });
   });
+
+  missionCheckboxes('finish');
+  missionCheckboxes('undo');
 });

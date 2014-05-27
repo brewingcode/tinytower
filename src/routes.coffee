@@ -4,13 +4,13 @@ _ = require 'underscore'
 index = (req, res) ->
   id = req.session.userId
   if id?
-    knex.raw("""
+    knex.raw """
       select u.id, u.name as username, t.story, f.name
       from floors f
       left join towers t on f.name = t.floor
       left join users u on u.id = t.user
-      order by t.story desc
-  """).then (resp) ->
+      order by t.story desc"""
+    .then (resp) ->
       user = _.find resp[0], (row) -> row.id is id
       if user
         res.render 'index',
@@ -47,8 +47,37 @@ addfloor = (req, res) ->
   .then ->
     res.send(200)
 
+missions = (req, res) ->
+  knex.raw """
+    select m.name, ifnull(c.user, 0) completed
+    from missions m
+    left join completed c on m.name = c.mission
+    where c.user = #{req.session.userId} or c.user is null
+    order by m.name"""
+  .then (resp) ->
+    console.log "resp: ", resp
+    res.render 'missions',
+      done: _.map _.filter(resp[0], (row) -> row.completed isnt 0), (row) -> row.name
+      possible: _.map _.filter(resp[0], (row) -> row.completed is 0), (row) -> row.name
+
+togglemission = (req, res) ->
+  if req.param('which') is 'finish'
+    knex('completed').insert
+      mission: req.param('name'),
+      user: req.session.userId
+    .then ->
+      res.send(200)
+  else
+    knex('completed').where
+      user: req.session.userId
+    .delete()
+    .then ->
+      res.send(200)
+
 exports.setup = (app) ->
   app.get('/', index)
   app.post('/setusername', setusername)
   app.get('/newfloors', newfloors)
   app.post('/addfloor', addfloor)
+  app.get('/missions', missions)
+  app.post('/togglemission', togglemission)

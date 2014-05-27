@@ -215,3 +215,4 @@ insert into missions(name, part1, part2, part3) values
   ("Confucious Day", "Martial Arts", "Asian Cuisine", null),
   ("World Vegetarian Day", "Vegan Food", "Plant Nursery", null),
   ("Fire Prevention Day", "Fire Station", "Ad Agency", null);
+create table if not exists completed(mission string, user integer);

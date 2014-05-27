@@ -1,0 +1,24 @@
+extends layout
+
+block content
+  p
+    a(href="/") Go back
+  table(style="width:100%;")
+    tr
+      td(colspan="2")
+        b Available Missions
+    each m in possible
+      tr
+        td
+          input.finish(type="checkbox", value="#{m}")
+        td= m
+    tr
+      td(colspan="2")
+        b Finished Missions
+    each m in done
+      tr
+        td
+         input.undo(type="checkbox", value="#{m}")
+        td= m
+
+
