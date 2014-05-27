@@ -6,5 +6,5 @@ complete, given your tower.
 ### Install
 
     git clone ...
-    cd tinytower
+    cd tinytower && npm install
     cake dbinit build dev
