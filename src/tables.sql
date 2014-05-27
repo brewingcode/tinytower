@@ -124,8 +124,8 @@ insert into floors(name, category) values
   ("Tv Studio", "Creative"),
   ("Wood Shop", "Creative");
 create table if not exists towers (user integer, story integer, floor string);
-create table if not exists quests (name string, part1 integer, part2 integer, part3 integer);
-insert into quests(name, part1, part2, part3) values
+create table if not exists missions (name string, part1 integer, part2 integer, part3 integer);
+insert into missions(name, part1, part2, part3) values
   ("Beware Of Dog", "Architect Office", "Game Studio", null),
   ("Soy Loco", "Asian Cuisine", "Vegan Food", null),
   ("Presidents Day 2012", "Auto Dealer", "Furniture Store", null),
