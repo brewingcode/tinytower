@@ -7,4 +7,6 @@ complete, given your tower.
 
     git clone ...
     cd tinytower && npm install
-    cake dbinit build dev
+    cake dbinit
+    cake build
+    node .app/app.js
