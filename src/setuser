@@ -1,0 +1,35 @@
+#!/usr/bin/env coffee
+
+Knex = require 'knex'
+nom = require 'nomnom'
+_ = require 'underscore'
+
+knex = Knex.initialize
+  client: 'sqlite3'
+  connection:
+    filename: '.app/data.db'
+
+opts = nom
+  .script('setuser')
+  .options
+    sid:
+      position: 0
+    userId:
+      position: 1
+  .parse()
+
+knex('sessions').select().then (sessions) ->
+  knex('users').select().then (users) ->
+    for user in users
+      session = _.find sessions, (s) -> JSON.parse(s.sess).userId is user.id
+      if session
+        sess = JSON.parse(session.sess)
+        if session.sid is opts.sid
+          sess.userId = opts.userId
+          return knex('sessions').where(sid:opts.sid).update(sess:JSON.stringify(sess))
+        else
+          console.log [session.sid, user.id, user.name].join("\t")
+      else
+        console.log ["(none)                  ", user.id, user.name].join("\t")
+.finally ->
+  process.exit()
