@@ -27,9 +27,9 @@ knex('sessions').select().then (sessions) ->
         if session.sid is opts.sid
           sess.userId = opts.userId
           return knex('sessions').where(sid:opts.sid).update(sess:JSON.stringify(sess))
-        else
-          console.log [session.sid, user.id, user.name].join("\t")
-      else
-        console.log ["(none)                  ", user.id, user.name].join("\t")
+
+      if !opts.sid and !opts.userId
+        sid = if session then session.sid else "(none)                  "
+        console.log [sid, user.id, user.name].join("\t")
 .finally ->
   process.exit()
